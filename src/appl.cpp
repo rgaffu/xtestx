@@ -1,27 +1,13 @@
 /**
 ******************************************************************************
 * @file    appl.cpp
-* @brief   Class for aaapplicatiom
-*
-* @author  GR 
-* @version V1.0.0
-* @date    10-Jan-2015
-*          
-* @verbatim
-* @endverbatim
-*
-******************************************************************************
-* @attention
-*
-******************************************************************************
-* @note
-*
 *****************************************************************************/
 
 //////////////////////////////////////////////////////////////////////////////
 //                         I N C L U D E S                                  //
 //////////////////////////////////////////////////////////////////////////////
 #include <logging.hpp>
+#include "syssettings.hpp"
 
 #include "appl.hpp"
 
@@ -38,6 +24,9 @@ APPL::APPL()
 	memset(this, 0, sizeof(APPL));
 	_VBL(1) << "APPL thread ID "<< HEX(pthread_self(), sizeof(pthread_t)*2);
 	running = true;
+    
+    SysSettings ss;
+    INF() << ss.systemUname_request();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -83,8 +72,6 @@ bool APPL::init()
 		return false;
 	}
 
-	
-	//m_timerLed = nullptr;
 	m_timerLed = m_timers->start_periodic(100, &APPL::on_timer_led);
 	
 	return true;

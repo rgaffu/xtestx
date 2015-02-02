@@ -3,7 +3,7 @@
 * @file    pool_allocator.hpp
 * @brief   A simple template class to implement pool memory allocators
 *
-* @author  AA Dinema s.p.a.
+* @author  
 * @version V1.0.0
 * @date    05-Nov-2014
 *          
