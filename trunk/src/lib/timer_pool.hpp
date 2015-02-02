@@ -3,7 +3,7 @@
 * @file    timer_pool.hpp
 * @brief   A class that initialize and manages a collection of rt timers
 *
-* @author  AA Dinema s.p.a.
+* @author  
 * @version V1.0.0
 * @date    05-Nov-2014
 *          

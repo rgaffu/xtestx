@@ -3,7 +3,7 @@
 * @file    asciibin.hpp
 * @brief   Ascii to binary (and viceversa) conversion routines
 *
-* @author  AA Dinema s.p.a.
+* @author  
 * @version V1.0.0
 * @date    25-Nov-2014
 *          

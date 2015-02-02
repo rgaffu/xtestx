@@ -75,8 +75,9 @@ SET( xtestx_SRCS
 	src/lib/epoll_fds_mgr.cpp
 	src/lib/timer_pool.cpp
 	src/lib/sock_server.cpp
-	src/lib/version.c
+	src/lib/syssettings.cpp
 	src/lib/typedumpers.cpp
+    src/lib/version.c
 	src/main.cpp
 	src/appl.cpp	
 )
@@ -88,6 +89,7 @@ SET( xtestx_INCS
 	src/lib/asciibin.hpp
 	src/lib/epoll_fds_mgr.hpp
 	src/lib/sock_server.hpp
+    src/lib/syssettings.h
 	src/lib/typedumpers.hpp
 	src/appl.hpp
 )
