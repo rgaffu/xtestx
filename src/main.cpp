@@ -6,18 +6,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // I N C L U D E S                                                          //
 //////////////////////////////////////////////////////////////////////////////
-/*#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h> 
-#include <time.h> 
-#include <syslog.h>
-#include <sched.h>
-#include <dlfcn.h> 
-#include <execinfo.h>
-#include <cxxabi.h>*/
-
+#include <pwd.h>
 #include "version.h"
 #include "appl.hpp"
 
@@ -108,19 +97,16 @@ static void functionCyclic()
 static int splash(int argc, char *argv[])
 {
 	printf("%s %s [%s]\n", get_description_string(), get_version_string(), get_build_date());
-	return 0;
-	printf("\n");
-	printf("%s\n", &argv[0][2]);
-	printf("Usage: %s [OPTION]", argv[0]);
-	printf("\n");
-	printf("-m, --memshared            execute without expecting shared memory already created\n");
-	printf("\n");
-	
-	for(int ii = 1; ii < argc; ii++)
-	{
-		//bOptionMem = ((strcmp(argv[ii],"-m") == 0) || (strcmp(argv[ii],"--memshared") == 0));
-	}
 
+    // Information about user
+    register struct passwd *pw;
+    int uid = geteuid();
+    pw = getpwuid (uid);
+    printf("user %s [%d]\n", pw->pw_name, uid);
+    
+    // TODO Gestire getopt getenv
+    
+    
 	return 0;
 }
 
