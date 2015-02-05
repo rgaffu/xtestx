@@ -9,6 +9,7 @@
 #include <logging.hpp>
 #include "syssettings.hpp"
 
+#include "version.h"
 #include "appl.hpp"
 
 
@@ -32,6 +33,9 @@ APPL::APPL()
 /////////////////////////////////////////////////////////////////////////////
 APPL::~APPL()
 {
+    if (pstat)
+        delete pstat;
+    
 	if (m_timers)
 		delete m_timers;
 
@@ -51,7 +55,13 @@ bool APPL::init()
 // 		delete m_pIO;
 // 		return false;
 // 	}
-	
+/*******************************************************************************
+** 
+*******************************************************************************/
+    static char version[40];
+    snprintf(version, 40, "%d.%d", VERSION_MAJOR_APPLICATIVE, VERSION_MINOR_APPLICATIVE);
+    pstat = new ApplConfigFile("appl.stat");
+    pstat->put("ver_appl_appl", version);
 	
 	m_timers = new ApplTimerPool(4);
 	if (m_timers->initialize(APPL_TIMERS_SIGNAL, this) == -1) {
@@ -80,6 +90,9 @@ bool APPL::init()
 /////////////////////////////////////////////////////////////////////////////
 bool APPL::run()
 {
+    if (pstat && pstat->is_changed())
+        pstat->write();
+    
 	m_SockSrv->process_connections();
 	return running;
 }
@@ -92,4 +105,8 @@ void APPL::on_timer_led()
 //		m_timers->stop(m_led_timer);
 //		m_timers->release(m_led_timer);
 	INF() << __func__ << m_cntLed++;
+    
+    if ((m_cntLed % 50) == 0) {
+        pstat->put("counter", m_cntLed);
+    }
 }

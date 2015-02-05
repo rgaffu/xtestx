@@ -72,6 +72,7 @@ INCLUDE_DIRECTORIES(
 MESSAGE(  ${BASE_DEVELOP}/${LINUX_VERSION_DIR}/include )
 
 SET( xtestx_SRCS
+    src/lib/configfile.cpp
 	src/lib/epoll_fds_mgr.cpp
 	src/lib/timer_pool.cpp
 	src/lib/sock_server.cpp
@@ -83,15 +84,17 @@ SET( xtestx_SRCS
 )
 
 SET( xtestx_INCS
-	src/lib/timer_pool.hpp
+    src/lib/configfile.hpp
 	src/lib/easylogging++.hpp
 	src/lib/logging.hpp
 	src/lib/asciibin.hpp
 	src/lib/epoll_fds_mgr.hpp
 	src/lib/sock_server.hpp
     src/lib/syssettings.h
+    src/lib/timer_pool.hpp
 	src/lib/typedumpers.hpp
 	src/appl.hpp
+    src/applConfigFile.hpp
 )
 
 ADD_EXECUTABLE( xtestx ${xtestx_SRCS} )
