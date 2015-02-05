@@ -27,6 +27,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <timer_pool.hpp>
 #include <sock_server.hpp>
+#include "applConfigFile.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -94,11 +95,13 @@ protected:
 	bool running;
 	
 	SocketServer        *m_SockSrv;
-	ApplSigHandler       *m_sigh;
+	ApplSigHandler      *m_sigh;
 	
 private:
-	ApplTimerPool   *m_timers;
-	aptimer_t 		m_timerLed;
+	ApplTimerPool       *m_timers;
+	aptimer_t 		    m_timerLed;
+    
+    ApplConfigFile      *pstat; // Persistent status    
 };
 
 #endif /* __APPL_HPP_INCLUDED */
