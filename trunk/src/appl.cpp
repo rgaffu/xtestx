@@ -11,7 +11,7 @@
 
 #include "version.h"
 #include "appl.hpp"
-
+#include "fileutility.hpp"
 
 #define LOG_SUBSYSTEM_ID "default"
 
@@ -104,9 +104,12 @@ void APPL::on_timer_led()
 //	m_led_status = !m_led_status;
 //		m_timers->stop(m_led_timer);
 //		m_timers->release(m_led_timer);
-	INF() << __func__ << m_cntLed++;
+	//INF() << __func__ << m_cntLed++;
     
     if ((m_cntLed % 50) == 0) {
+        //FileUtility fu;
+        //fu.domkdir("../prova");
+        
         pstat->put("counter", m_cntLed);
     }
 }

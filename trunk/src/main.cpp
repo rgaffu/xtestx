@@ -94,6 +94,7 @@ static void functionCyclic()
 }
 
 /////////////////////////////////////////////////////////////////////////////
+#include <sys/resource.h>
 static int splash(int argc, char *argv[])
 {
 	printf("%s %s [%s]\n", get_description_string(), get_version_string(), get_build_date());
@@ -103,6 +104,13 @@ static int splash(int argc, char *argv[])
     int uid = geteuid();
     pw = getpwuid (uid);
     printf("user %s [%d]\n", pw->pw_name, uid);
+    
+    int which = PRIO_PROCESS;
+    int pid = getpid();
+    int ret = getpriority(which, pid);
+    printf("pid=%d priority=%d\n", pid, ret);
+    // change priority 
+    //setpriority(which, pid, -5);
     
     // TODO Gestire getopt getenv
     

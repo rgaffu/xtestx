@@ -74,6 +74,7 @@ MESSAGE(  ${BASE_DEVELOP}/${LINUX_VERSION_DIR}/include )
 SET( xtestx_SRCS
     src/lib/configfile.cpp
 	src/lib/epoll_fds_mgr.cpp
+	src/lib/fileutility.cpp
 	src/lib/timer_pool.cpp
 	src/lib/sock_server.cpp
 	src/lib/syssettings.cpp
@@ -89,6 +90,7 @@ SET( xtestx_INCS
 	src/lib/logging.hpp
 	src/lib/asciibin.hpp
 	src/lib/epoll_fds_mgr.hpp
+	src/lib/fileutility.hpp
 	src/lib/sock_server.hpp
     src/lib/syssettings.h
     src/lib/timer_pool.hpp
