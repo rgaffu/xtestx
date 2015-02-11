@@ -1,7 +1,7 @@
 /**
 ******************************************************************************
-* @file    appl.hpp
-* @brief   Class for application
+* @file    appl2.hpp
+* @brief   Class for application (thread)
 *
 * @author  GR
 * @version V1.0.0
@@ -19,8 +19,8 @@
 *****************************************************************************/
 
 /*Include only once */
-#ifndef __APPL_HPP_INCLUDED
-#define __APPL_HPP_INCLUDED
+#ifndef __APPL2_HPP_INCLUDED
+#define __APPL2_HPP_INCLUDED
 
 //////////////////////////////////////////////////////////////////////////////
 //                         I N C L U D E S                                  //
@@ -28,7 +28,6 @@
 #include <timer_pool.hpp>
 #include <sock_server.hpp>
 #include "applConfigFile.hpp"
-#include "appl2.hpp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -41,15 +40,17 @@
 /// \dot	digraph {
 ///		}
 ///	\enddot
-class APPL
+class APPL2
 {
+    friend void *appl2_thread_trampoline(APPL2 *);
+    
 	// CLASS TYPES ///////////////////////////////////////////////////////////////
-	typedef TimerPool<APPL> ApplTimerPool;
+	typedef TimerPool<APPL2> ApplTimerPool;
 
 //--- Funzioni ---
 public:
-	APPL();
-	~APPL();
+	APPL2();
+	~APPL2();
 
 	/// Init
 	///
@@ -63,12 +64,12 @@ public:
 	///
 	/// \return		true= run corretto \n
 	///				false= run errato
-	bool run();
+	bool run_thread();
 
 protected:
 	class ApplSigHandler : public SocketHandler {
 	public:
-		ApplSigHandler(SocketServer * const server, APPL * const app):
+		ApplSigHandler(SocketServer * const server, APPL2 * const app):
 			SocketHandler(server),
 			m_appl(app)
 		{}
@@ -81,7 +82,7 @@ protected:
 		}
 	
 	private:
-		APPL *m_appl;
+		APPL2 *m_appl;
 	};
 	
 	void handle_timers_signal(aptimer_t elapsed_timer) {
@@ -89,7 +90,7 @@ protected:
 	}
 	
 private:
-	void on_timer_led();
+	void on_timer();
 	
 //--- Variabili ---
 protected:
@@ -99,14 +100,13 @@ protected:
 	ApplSigHandler      *m_sigh;
 	
 private:
+    pthread_t m_thread;
+    bool      m_thread_created;
+    
 	ApplTimerPool       *m_timers;
 	aptimer_t 		    m_timerLed;
-    
-    ApplConfigFile      *m_pstat;
-    
-    APPL2               *m_pAppl2;
 };
 
-#endif /* __APPL_HPP_INCLUDED */
+#endif /* __APPL2_HPP_INCLUDED */
 /* EOF */
 

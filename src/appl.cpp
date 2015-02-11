@@ -33,8 +33,8 @@ APPL::APPL()
 /////////////////////////////////////////////////////////////////////////////
 APPL::~APPL()
 {
-    if (pstat)
-        delete pstat;
+    if (m_pstat)
+        delete m_pstat;
     
 	if (m_timers)
 		delete m_timers;
@@ -42,6 +42,9 @@ APPL::~APPL()
 	if (m_SockSrv)
 		delete m_SockSrv;
 	
+    if (m_pAppl2)
+        delete m_pAppl2;
+    
 	running = false;
 }
 
@@ -60,8 +63,8 @@ bool APPL::init()
 *******************************************************************************/
     static char version[40];
     snprintf(version, 40, "%d.%d", VERSION_MAJOR_APPLICATIVE, VERSION_MINOR_APPLICATIVE);
-    pstat = new ApplConfigFile("appl.stat");
-    pstat->put("ver_appl_appl", version);
+    m_pstat = new ApplConfigFile("appl.stat");
+    m_pstat->put("ver_appl_appl", version);
 	
 	m_timers = new ApplTimerPool(4);
 	if (m_timers->initialize(APPL_TIMERS_SIGNAL, this) == -1) {
@@ -82,16 +85,29 @@ bool APPL::init()
 		return false;
 	}
 
-	m_timerLed = m_timers->start_periodic(100, &APPL::on_timer_led);
-	
+	m_timerLed = m_timers->start_periodic(1000, &APPL::on_timer_led);
+
+    m_pAppl2 = new APPL2;
+    if (m_pAppl2 == 0) {
+        ERROR() << "Cannot create appl2 class";
+        return false;
+    }
+
+    if (m_pAppl2->init() == false) {
+        ERROR() << "Cannot init appl2 management class";
+        delete m_pAppl2;
+        m_pAppl2 = 0;
+        return false;
+    }
+    
 	return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 bool APPL::run()
 {
-    if (pstat && pstat->is_changed())
-        pstat->write();
+    if (m_pstat && m_pstat->is_changed())
+        m_pstat->write();
     
 	m_SockSrv->process_connections();
 	return running;
@@ -104,12 +120,12 @@ void APPL::on_timer_led()
 //	m_led_status = !m_led_status;
 //		m_timers->stop(m_led_timer);
 //		m_timers->release(m_led_timer);
-	//INF() << __func__ << m_cntLed++;
+	INF() << __func__ << m_cntLed++;
     
     if ((m_cntLed % 50) == 0) {
         //FileUtility fu;
         //fu.domkdir("../prova");
         
-        pstat->put("counter", m_cntLed);
+        m_pstat->put("counter", m_cntLed);
     }
 }
