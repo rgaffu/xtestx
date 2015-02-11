@@ -81,7 +81,8 @@ SET( xtestx_SRCS
 	src/lib/typedumpers.cpp
     src/lib/version.c
 	src/main.cpp
-	src/appl.cpp	
+	src/appl.cpp
+	src/appl2.cpp
 )
 
 SET( xtestx_INCS
@@ -96,6 +97,7 @@ SET( xtestx_INCS
     src/lib/timer_pool.hpp
 	src/lib/typedumpers.hpp
 	src/appl.hpp
+	src/appl2.hpp
     src/applConfigFile.hpp
 )
 
