@@ -100,6 +100,9 @@ bool APPL::init()
         return false;
     }
     
+    /*FileUtility fu;
+    fu.check_free_space("/mnt/usb");*/
+    
 	return true;
 }
 

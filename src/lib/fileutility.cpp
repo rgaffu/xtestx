@@ -8,6 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/statvfs.h>
 
 #include "fileutility.hpp"
 #include "logging.hpp"
@@ -63,3 +64,31 @@ int FileUtility::domkdir(const char *directory)
 
     return status;
 }
+
+/////////////////////////////////////////////////////////////////////////////
+int FileUtility::check_free_space(const char *media)
+{
+    struct statvfs buf;
+
+   if (!statvfs(media, &buf)) {
+      unsigned long blksize, blocks, freeblks, disk_size, used, free;
+      blksize = buf.f_bsize;
+      blocks = buf.f_blocks;
+      freeblks = buf.f_bfree;
+
+      disk_size = blocks*blksize;
+      free = freeblks*blksize;
+      used = disk_size - free;
+      
+      INF() << "media:     " << media;
+      INF() << "disk size: " << disk_size;
+      INF() << "used:      " << used;
+      INF() << "free:      " << free;
+
+      return free;
+    }
+    else {
+        return -1;
+    }    
+}
+

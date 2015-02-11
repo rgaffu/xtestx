@@ -61,6 +61,7 @@ public:
 
     long int filesize(const char *filename);
     int domkdir(const char *directory);
+    int check_free_space(const char *media);
     
 protected:
 
