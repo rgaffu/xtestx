@@ -56,13 +56,17 @@ class FileUtility
 {
 //  METHODS  /////////////////////////////////////////////////////////////////
 public:
-	FileUtility();
-	virtual ~FileUtility();
+    FileUtility();
+    virtual ~FileUtility();
 
+    bool fileexist(const char *filename);
     long int filesize(const char *filename);
+    bool findstring(const char *filename, const char *str);
+    string line(const char *filename, const int numline);
+    
     int domkdir(const char *directory);
     int check_free_space(const char *media);
-    
+        
 protected:
 
 
