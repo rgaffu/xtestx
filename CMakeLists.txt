@@ -2,32 +2,6 @@ CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
 SET( MODULE_NAME xtestx )
 GET_FILENAME_COMPONENT( CONFIGURATION_PROJECT ${CMAKE_BINARY_DIR} NAME )
 
-
-####################################################################
-#                                                                  #
-#                        ARM9                                      #
-#                                                                  #
-####################################################################
-IF( CONFIGURATION_PROJECT STREQUAL "arm-imx285.release" )
-	MESSAGE( "=== arm-imx285.release ===" )
-	
-	# Variabili da Settare
-	SET( ARCHITETTURA                    arm )
-	SET( PREFIX_CROSS_COMPILER           "arm-SK5783-linux-gnueabi-" )
-	SET( CMAKE_CXX_COMPILER              ${PREFIX_CROSS_COMPILER}c++ )
-	SET( CMAKE_C_COMPILER                ${PREFIX_CROSS_COMPILER}gcc )
-	SET( CMAKE_LINKER                    ${PREFIX_CROSS_COMPILER}ld )
-
-	PROJECT( ${MODULE_NAME})
-
-	SET( CMAKE_BUILD_TYPE Release )
-	SET( KERNEL_VERSION "2.6.35" )
-	
-	SET( CMAKE_INSTALL_PREFIX 			/home/dinex/Cdk/SK5783.imx285/trunk/cdk/rootfs )
-	SET( BASE_DEVELOP 					/home/dinex/Cdk/SK5783.imx285/trunk/cdk/opt )
-	SET( KERNEL_DIR ${BASE_DEVELOP}-linux-${KERNEL_VERSION} )
-ENDIF ()
-
 ####################################################################
 #                                                                  #
 #                        i586                                      #
@@ -50,6 +24,44 @@ IF( CONFIGURATION_PROJECT STREQUAL "i586" )
 	
 	SET( CMAKE_CXX_FLAGS "-DCAN_OVER_ETHERNET -DDRIVE_CAN_NAME='FlexCAN'")
 	
+ENDIF ()
+
+
+####################################################################
+#                                                                  #
+#                        ARM- IMX285                               #
+#                                                                  #
+####################################################################
+IF( CONFIGURATION_PROJECT STREQUAL "arm-imx285.release" )
+	MESSAGE( "=== arm-imx285.release ===" )
+	ADD_DEFINITIONS( -DRELEASE_IMX285 -D__KERNEL_STRICT_NAMES -DIMX285 )
+	SET ( imx285_COMUNE Y )
+ELSEIF( CONFIGURATION_PROJECT STREQUAL "arm-imx285.debug" )
+	MESSAGE( "=== arm-imx285.debug ===" )
+	ADD_DEFINITIONS( -D_DEBUG -DDEBUG_IMX285 -D__KERNEL_STRICT_NAMES -DIMX285 --debug )
+	SET ( imx285_COMUNE Y )
+ENDIF ()
+
+IF( imx285_COMUNE )
+####################################################################
+#                                                                  #
+#                        ARM9                                      #
+#                                                                  #
+####################################################################
+	# Variabili da Settare
+	SET( ARCHITETTURA                    arm )
+	SET( PREFIX_CROSS_COMPILER           "arm-SK5783-linux-gnueabi-" )
+	SET( CMAKE_CXX_COMPILER              ${PREFIX_CROSS_COMPILER}c++ )
+	SET( CMAKE_C_COMPILER                ${PREFIX_CROSS_COMPILER}gcc )
+	SET( CMAKE_LINKER                    ${PREFIX_CROSS_COMPILER}ld )
+
+	PROJECT( ${MODULE_NAME} )
+	SET( CMAKE_INSTALL_PREFIX 		/home/dinex/Cdk/SK5783.imx285/trunk/cdk/rootfs )
+	SET( BASE_DEVELOP 			/home/dinex/Cdk/SK5783.imx285/trunk/cdk/opt )
+
+#	SET( KERNEL_VERSION "2.6.35" )	
+#	SET( KERNEL_DIR ${BASE_DEVELOP}-linux-${KERNEL_VERSION} )
+
 ENDIF ()
 
 ####################################################################
