@@ -59,7 +59,7 @@ void *appl2_thread_trampoline(APPL2 *obj)
 
     // Startup synchronization
     //obj->m_state_mutex.lock();
-    _VBL(1) << "MiWi main thread started ID:" << HEX(pthread_self(), sizeof(pthread_t)*2);
+    _VBL(1) << "APPL2 main thread started ID:" << HEX(pthread_self(), sizeof(pthread_t)*2);
     //obj->m_state_mutex.unlock();
 
     do {
