@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <asm/types.h>
+#include <sys/file.h>
 
 #include "asciibin.hpp"
 #include "syssettings.hpp"
@@ -42,7 +43,7 @@ void SysSettings::systemDateTime_set(char day, char month, int year, char hour, 
 }
 
 /////////////////////////////////////////////////////////////////////////////
-char *SysSettings::systemUname_request(void)
+char *SysSettings::versionLinux_request(void)
 {
     utsname 	structInfo;
 	static char linuxVersion[128];
@@ -54,7 +55,7 @@ char *SysSettings::systemUname_request(void)
         return 0;
 	}
 
-	snprintf(linuxVersion, 128, "%s %s %s %s", structInfo.sysname, structInfo.release, structInfo.version, structInfo.machine);
+	snprintf(linuxVersion, sizeof(linuxVersion), "%s %s %s %s", structInfo.sysname, structInfo.release, structInfo.version, structInfo.machine);
 
 	_VBL(1) << "Uname:" <<
 		" " << structInfo.domainname <<
@@ -65,6 +66,61 @@ char *SysSettings::systemUname_request(void)
 		" " << structInfo.version;
 	
 	return linuxVersion;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+char *SysSettings::versionUBoot_request(void)
+{
+    static char ubootVersion[128];
+    strcpy(ubootVersion, "");
+#if 0 
+    int fdFile;
+    char cChar;
+    int idxStr;
+    bool found = false;
+    
+    if ((fdFile = open("/dev/mtd0", O_RDONLY)) >= 0) {
+        idxStr = 0;
+        while (read(fdFile, &cChar, 1)) {
+            ubootVersion[idxStr++] = cChar;
+            if(strncmp(ubootVersion, "U-Boot", idxStr)) {
+                /* diverse */
+                idxStr = 0;
+            } else {
+                if(idxStr >= 6) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if(found) {
+            // prosegui lettura
+            while(read(fdFile, &cChar, 1)){
+                ubootVersion[idxStr++] = cChar;
+                if (cChar == 0)
+                    break;
+            }
+        } else {
+            strcpy(ubootVersion, "");
+            _VBL(1) << "boot version unknown";
+        }
+        close(fdFile);
+    } else
+        _VBL(1) << "unable to open boot sector";
+
+    INF() << ubootVersion;
+#endif    
+    return ubootVersion;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+char *SysSettings::versionqt_request()
+{
+    static char qtVersion[128];
+    
+    strcpy(qtVersion, "");
+    //snprintf(qtVersion, sizeof(qtVersion), "%s", QT_VERSION_STR);
+    return qtVersion;
 }
 
 /////////////////////////////////////////////////////////////////////////////

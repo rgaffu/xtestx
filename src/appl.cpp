@@ -27,7 +27,8 @@ APPL::APPL()
 	running = true;
     
     SysSettings ss;
-    INF() << ss.systemUname_request();
+    INF() << ss.versionLinux_request();
+    INF() << ss.versionUBoot_request();
 }
 
 /////////////////////////////////////////////////////////////////////////////

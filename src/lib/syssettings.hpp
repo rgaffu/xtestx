@@ -59,8 +59,22 @@ public:
 	/// \param[in]	none 
 	///
 	/// \return		versione linux kernel
-	char *systemUname_request(void);
+	char *versionLinux_request(void);
 
+    /// Richiesta versione uboot.
+    ///
+    /// \param[in]  none 
+    ///
+    /// \return     versione uboot 
+    char *versionUBoot_request(void);    
+    
+    /// Richiesta versione librerie qt.
+    ///
+    /// \param[in]  none 
+    ///
+    /// \return     versione librerie Qt 
+    char *versionqt_request(void); 
+    
 	/// Richiesta reboot del sistema.
 	///
 	/// \param[in]	none 
